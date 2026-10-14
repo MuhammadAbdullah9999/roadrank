@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import { site as cfg } from '../site.config';
+---
+<Base title="About" description={cfg.aboutIntro}>
+  <section class="section blog-head"><p class="eyebrow">About</p><h1>{cfg.aboutTitle}</h1><p class="lead center">{cfg.aboutIntro}</p></section>
+  <section class="section narrow prose">
+    {cfg.about.map((b) => (<><h2>{b.title}</h2>{b.paras.map((p) => <p>{p}</p>)}{b.list && <ul>{b.list.map((l) => <li>{l}</li>)}</ul>}</>))}
+    <aside class="callout"><strong>Get in touch</strong><p>Feedback, bug reports or press questions: <a href={`mailto:${cfg.email}`}>{cfg.email}</a></p></aside>
+  </section>
+</Base>

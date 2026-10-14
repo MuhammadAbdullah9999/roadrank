@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import { site as cfg } from '../site.config';
+const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: cfg.faq.map((q) => ({ '@type': 'Question', name: q.q, acceptedAnswer: { '@type': 'Answer', text: q.a } })) };
+---
+<Base title="FAQ" description={`Answers to common questions about ${cfg.name}: pricing, privacy, how it works and what it can and cannot do.`}>
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+  <section class="section blog-head"><p class="eyebrow">FAQ</p><h1>Frequently asked questions</h1><p class="lead center">Straight answers about {cfg.name}.</p></section>
+  <section class="section tight"><div class="faq narrow-block">
+    {cfg.faq.map((q) => (<details><summary>{q.q}</summary><p>{q.a}</p></details>))}
+  </div>
+  <p class="center">Still stuck? <a class="link" href={`mailto:${cfg.email}`}>Email us</a>.</p></section>
+</Base>

@@ -1,0 +1,14 @@
+---
+import { catMeta, readTime, fmtDate, type Post } from '../lib/posts';
+const { post, big = false } = Astro.props as { post: Post; big?: boolean };
+const m = catMeta(post.data.category);
+---
+<a class:list={['tile', { big }]} href={`/blog/${post.id}`} data-cat={post.data.category}>
+  <div class="cover" style={`--from:${m.from};--to:${m.to}`}><span>{m.emoji}</span></div>
+  <div class="tile-body">
+    <div class="tile-meta"><span class="chip">{post.data.category}</span><span>{readTime(post)} min read</span></div>
+    <h3>{post.data.title}</h3>
+    <p>{post.data.description}</p>
+    <time class="tile-date" datetime={post.data.date.toISOString()}>{fmtDate(post.data.date)}</time>
+  </div>
+</a>

@@ -1,10 +1,13 @@
 ---
 import { site as cfg } from '../site.config';
 import '../styles.css';
+import '../theme.css';
 const { title, description = cfg.description, type = 'website' } = Astro.props;
 const fullTitle = title === cfg.name ? `${cfg.name}: ${cfg.tagline}` : `${title} | ${cfg.name}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const og = new URL(cfg.ogImage, Astro.site);
+const path = Astro.url.pathname;
+const links = [['Features', '/#features'], ['How it works', '/#how'], ['Blog', '/blog'], ['FAQ', '/faq'], ['About', '/about']];
 ---
 <!doctype html>
 <html lang="en">
@@ -16,8 +19,10 @@ const og = new URL(cfg.ogImage, Astro.site);
     <meta name="theme-color" content={cfg.themeColor} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/icon.png" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    {(cfg as any).fontHref && <link rel="stylesheet" href={(cfg as any).fontHref} />}
+    <link rel="alternate" type="application/rss+xml" title={`${cfg.name} blog`} href="/rss.xml" />
     <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={cfg.name} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -26,25 +31,29 @@ const og = new URL(cfg.ogImage, Astro.site);
   </head>
   <body>
     <header class="nav">
-      <a class="brand" href="/"><img src="/icon.png" alt="" width="32" height="32" />{cfg.name}</a>
-      <nav>
-        <a href="/blog">Blog</a>
-        <a href="/privacy.html">Privacy</a>
-        {cfg.storeUrl && <a class="btn small" href={cfg.storeUrl}>Get the app</a>}
+      <a class="brand" href="/"><img src="/icon.png" alt="" width="34" height="34" />{cfg.name}</a>
+      <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Menu" />
+      <label for="nav-toggle" class="burger" aria-hidden="true"><span></span><span></span><span></span></label>
+      <nav class="menu">
+        {links.map(([t, h]) => <a href={h} class:list={[{ on: h === path || (h === '/blog' && path.startsWith('/blog')) }]}>{t}</a>)}
+        {cfg.storeUrl
+          ? <a class="btn small" href={cfg.storeUrl}>Get the app</a>
+          : <a class="btn small soon" href="/#notify">Coming soon</a>}
       </nav>
     </header>
     <main><slot /></main>
     <footer class="foot">
-      <div>
-        <strong>{cfg.name}</strong>
-        <p>{cfg.footer}</p>
+      <div class="foot-grid">
+        <div>
+          <a class="brand" href="/"><img src="/icon.png" alt="" width="30" height="30" />{cfg.name}</a>
+          <p>{cfg.footer}</p>
+          <p class="small-print">{cfg.disclaimer}</p>
+        </div>
+        <div><h4>Explore</h4><a href="/#features">Features</a><a href="/#how">How it works</a><a href="/blog">Blog</a><a href="/faq">FAQ</a><a href="/about">About</a></div>
+        <div><h4>Legal</h4><a href="/privacy.html">Privacy policy</a><a href="/terms.html">Terms of use</a>{cfg.deleteUrl && <a href={cfg.deleteUrl}>Delete account</a>}<a href={`mailto:${cfg.email}`}>Contact</a></div>
+        <div><h4>More apps</h4><a href={cfg.sister.url}>{cfg.sister.name}</a><a href="/rss.xml">RSS feed</a><a href="/sitemap-index.xml">Sitemap</a></div>
       </div>
-      <div class="links">
-        <a href="/blog">Blog</a>
-        <a href="/privacy.html">Privacy</a>
-        <a href="/terms.html">Terms</a>
-        <a href={`mailto:${cfg.email}`}>Contact</a>
-      </div>
+      <p class="copy">© {new Date().getFullYear()} {cfg.name}. All rights reserved.</p>
     </footer>
   </body>
 </html>

@@ -1,7 +1,8 @@
 ---
 title: "Does smooth driving save fuel?"
 description: "Why gentle acceleration and braking usually lower fuel use, and what else matters."
-date: 2026-10-14
+date: 2026-10-08
+category: "Fuel & Costs"
 ---
 In general, yes. Aggressive driving usually uses more fuel than smooth driving.
 

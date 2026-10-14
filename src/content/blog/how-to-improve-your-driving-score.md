@@ -1,7 +1,8 @@
 ---
 title: "7 habits that improve your driving score"
 description: "Simple, safe habits that make your driving smoother and lift your score trip after trip."
-date: 2026-10-14
+date: 2026-10-12
+category: "Safer Driving"
 ---
 A higher driving score mostly comes from small habits. None of them need special skill.
 

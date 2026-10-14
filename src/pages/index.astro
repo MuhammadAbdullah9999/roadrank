@@ -1,84 +1,137 @@
 ---
-import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import PostCard from '../components/PostCard.astro';
+import { getPosts } from '../lib/posts';
 import { site as cfg } from '../site.config';
-const posts = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.data.date).slice(0, 3);
+const posts = (await getPosts()).slice(0, 6);
 const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'MobileApplication',
-  name: cfg.appName,
-  operatingSystem: 'Android',
-  applicationCategory: cfg.category,
-  description: cfg.description,
-  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  '@context': 'https://schema.org', '@type': 'MobileApplication', name: cfg.appName, operatingSystem: 'Android',
+  applicationCategory: cfg.category, description: cfg.description, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
 };
+const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: cfg.faq.slice(0, 6).map((q) => ({ '@type': 'Question', name: q.q, acceptedAnswer: { '@type': 'Answer', text: q.a } })) };
 ---
 <Base title={cfg.name}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+
   <section class="hero">
+    <div class="glow"></div>
     <div class="hero-text">
-      <p class="eyebrow">{cfg.eyebrow}</p>
-      <h1>{cfg.headline}</h1>
+      <p class="pill">{cfg.eyebrow}</p>
+      <h1 set:html={cfg.headline} />
       <p class="lead">{cfg.lead}</p>
       <div class="cta">
         {cfg.storeUrl
-          ? <a class="btn" href={cfg.storeUrl}>Get it on Google Play</a>
-          : <span class="btn soon">Coming soon to Google Play</span>}
-        <a class="btn ghost" href="/blog">Read the blog</a>
+          ? <a class="btn big" href={cfg.storeUrl}>Get it on Google Play</a>
+          : <a class="btn big soon" href="#notify">Coming soon to Google Play</a>}
+        <a class="btn big ghost" href="#features">See what it does</a>
       </div>
-      {cfg.note && <p class="note">{cfg.note}</p>}
+      <ul class="badges">{cfg.heroBadges.map((b) => <li>✓ {b}</li>)}</ul>
     </div>
-    <div class="shots">
-      {cfg.shots.slice(0, cfg.heroShots).map((s) => <img src={s.src} alt={s.alt} loading="eager" />)}
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>{cfg.featuresTitle}</h2>
-    <div class="grid">
-      {cfg.features.map((f) => (<div class="card"><h3>{f.title}</h3><p>{f.text}</p></div>))}
+    <div class="phones">
+      {cfg.heroShots.map((s, i) => <img class:list={['phone', `p${i}`]} src={s.src} alt={s.alt} loading="eager" />)}
     </div>
   </section>
 
-  {cfg.shots.length > cfg.heroShots && (
-    <section class="section">
-      <h2>See it in action</h2>
-      <div class="strip">
-        {cfg.shots.map((s) => <img src={s.src} alt={s.alt} loading="lazy" />)}
-      </div>
-    </section>
-  )}
-
-  <section class="section">
-    <h2>How it works</h2>
-    <ol class="steps">
-      {cfg.steps.map((s) => <li><strong>{s.title}</strong><span>{s.text}</span></li>)}
-    </ol>
+  <section class="stats">
+    {cfg.stats.map((s) => <div><strong>{s.value}</strong><span>{s.label}</span></div>)}
   </section>
 
-  <section class="section">
-    <h2>Questions</h2>
-    <div class="faq">
-      {cfg.faq.map((q) => (<details><summary>{q.q}</summary><p>{q.a}</p></details>))}
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>From the blog</h2>
-    <div class="posts">
-      {posts.map((p) => (
-        <a class="post" href={`/blog/${p.id}`}>
-          <h3>{p.data.title}</h3>
-          <p>{p.data.description}</p>
+  <section class="section problem">
+    <p class="eyebrow">{cfg.problem.eyebrow}</p>
+    <h2>{cfg.problem.title}</h2>
+    <p class="lead center">{cfg.problem.text}</p>
+    <div class="grid three">
+      {cfg.problem.items.map((i) => (
+        <a class="card hover" href={i.href}>
+          <span class="emoji">{i.emoji}</span>
+          <h3>{i.title}</h3><p>{i.text}</p>
+          {i.href !== '#' && <span class="more">Read more →</span>}
         </a>
       ))}
     </div>
   </section>
 
-  <section class="final">
+  <section class="section" id="features">
+    <p class="eyebrow">{cfg.featuresEyebrow}</p>
+    <h2>{cfg.featuresTitle}</h2>
+    <div class="rows">
+      {cfg.rows.map((r, i) => (
+        <div class:list={['row', { flip: i % 2 === 1 }]}>
+          <div class="row-text">
+            <p class="eyebrow">{r.eyebrow}</p>
+            <h3>{r.title}</h3>
+            <p class="lead">{r.text}</p>
+            <ul class="ticks">{r.bullets.map((b) => <li>{b}</li>)}</ul>
+          </div>
+          <div class="row-shot"><img src={r.shot} alt={r.alt} loading="lazy" /></div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">Everything included</p>
+    <h2>{cfg.gridTitle}</h2>
+    <div class="grid three">
+      {cfg.features.map((f) => (<div class="card"><span class="emoji">{f.emoji}</span><h3>{f.title}</h3><p>{f.text}</p></div>))}
+    </div>
+  </section>
+
+  <section class="section pro">
+    <div class="pro-box">
+      <div>
+        <p class="eyebrow">{cfg.pro.eyebrow}</p>
+        <h2>{cfg.pro.title}</h2>
+        <p class="lead">{cfg.pro.text}</p>
+      </div>
+      <ul class="ticks cols">{cfg.pro.items.map((i) => <li>{i}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <p class="eyebrow">How it works</p>
+    <h2>{cfg.howTitle}</h2>
+    <ol class="steps">
+      {cfg.steps.map((s) => <li><strong>{s.title}</strong><span>{s.text}</span></li>)}
+    </ol>
+  </section>
+
+  {cfg.shots.length > 0 && (
+    <section class="section">
+      <p class="eyebrow">Screenshots</p>
+      <h2>See it in action</h2>
+      <div class="strip">{cfg.shots.map((s) => <img src={s.src} alt={s.alt} loading="lazy" />)}</div>
+    </section>
+  )}
+
+  <section class="section">
+    <p class="eyebrow">Who it is for</p>
+    <h2>{cfg.audienceTitle}</h2>
+    <div class="grid three">
+      {cfg.audience.map((a) => (<div class="card"><span class="emoji">{a.emoji}</span><h3>{a.title}</h3><p>{a.text}</p></div>))}
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <p class="eyebrow">FAQ</p>
+    <h2>Questions, answered</h2>
+    <div class="faq narrow-block">
+      {cfg.faq.slice(0, 6).map((q) => (<details><summary>{q.q}</summary><p>{q.a}</p></details>))}
+      <p class="center"><a class="link" href="/faq">See all questions →</a></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="head-row"><div><p class="eyebrow">From the blog</p><h2>{cfg.blogTitle}</h2></div><a class="btn ghost" href="/blog">All articles</a></div>
+    <div class="tiles">{posts.map((p) => <PostCard post={p} />)}</div>
+  </section>
+
+  <section class="final" id="notify">
     <h2>{cfg.finalTitle}</h2>
+    <p class="lead center">{cfg.finalText}</p>
     {cfg.storeUrl
-      ? <a class="btn" href={cfg.storeUrl}>Get it on Google Play</a>
-      : <span class="btn soon">Coming soon to Google Play</span>}
+      ? <a class="btn big" href={cfg.storeUrl}>Get it on Google Play</a>
+      : <a class="btn big" href={`mailto:${cfg.email}?subject=Notify me when ${cfg.name} launches`}>Email me at launch</a>}
   </section>
 </Base>

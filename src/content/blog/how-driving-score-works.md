@@ -2,6 +2,8 @@
 title: "How a driving score works (and what actually moves it)"
 description: "A plain explanation of what phone-based driving scores measure: braking, acceleration and cornering."
 date: 2026-10-14
+category: "Driving Score"
+featured: true
 ---
 A driving score condenses a whole trip into one number. Here is what apps like Road Rank look at, and how to improve it.
 
@@ -13,6 +15,10 @@ Your phone has GPS and motion sensors. During a drive they show how your speed a
 - **Quick acceleration**: pulling away fast from lights and junctions.
 - **Sharp turns**: taking corners or roundabouts at speed.
 - **Speed**: how smoothly it stays steady rather than swinging up and down.
+
+## How Road Rank scores a drive
+
+Road Rank keeps it simple and transparent. Every drive starts at 100. Each hard-braking event costs 4 points and each quick acceleration costs 3. A drive needs at least 300 m to get a score. Sharp turns are counted and shown in your breakdown so you can see them too. Because the rules are fixed, you can always see what cost you points.
 
 ## Why smooth wins
 

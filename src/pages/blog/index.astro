@@ -1,21 +1,36 @@
 ---
-import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getPosts } from '../../lib/posts';
 import { site as cfg } from '../../site.config';
-const posts = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.data.date);
+const posts = await getPosts();
+const featured = posts.find((p) => p.data.featured) ?? posts[0];
+const rest = posts.filter((p) => p.id !== featured.id);
+const cats = Object.keys(cfg.categories).filter((c) => posts.some((p) => p.data.category === c));
 ---
 <Base title={`${cfg.name} Blog`} description={cfg.blogDescription}>
-  <section class="section narrow">
-    <h1>{cfg.name} blog</h1>
-    <p class="lead">{cfg.blogDescription}</p>
-    <div class="posts">
-      {posts.map((p) => (
-        <a class="post" href={`/blog/${p.id}`}>
-          <time datetime={p.data.date.toISOString()}>{p.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
-          <h3>{p.data.title}</h3>
-          <p>{p.data.description}</p>
-        </a>
-      ))}
-    </div>
+  <section class="section blog-head">
+    <p class="eyebrow">The {cfg.name} blog</p>
+    <h1>{cfg.blogHeading}</h1>
+    <p class="lead center">{cfg.blogDescription}</p>
   </section>
+  <section class="section tight">
+    <PostCard post={featured} big />
+  </section>
+  <section class="section tight">
+    <div class="filters" id="filters">
+      <button class="chip-btn on" data-f="all">All <em>{posts.length}</em></button>
+      {cats.map((c) => <button class="chip-btn" data-f={c}>{c} <em>{posts.filter((p) => p.data.category === c).length}</em></button>)}
+    </div>
+    <div class="tiles" id="tiles">{rest.map((p) => <PostCard post={p} />)}</div>
+  </section>
+  <script is:inline>
+    const btns = document.querySelectorAll('#filters .chip-btn');
+    const tiles = document.querySelectorAll('#tiles .tile');
+    btns.forEach((b) => b.addEventListener('click', () => {
+      btns.forEach((x) => x.classList.toggle('on', x === b));
+      const f = b.dataset.f;
+      tiles.forEach((t) => { t.style.display = f === 'all' || t.dataset.cat === f ? '' : 'none'; });
+    }));
+  </script>
 </Base>

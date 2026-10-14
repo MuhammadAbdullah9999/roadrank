@@ -1,0 +1,5 @@
+:root{--bg:#0a0a0a;--bg2:#0f0f0f;--panel:#161616;--line:#272727;--accent:#f5b800;--accent2:#ffd24d;--accent-ink:#0a0a0a;--display:"Barlow Condensed","Arial Narrow","Helvetica Neue",Impact,sans-serif}
+h1,h2{text-transform:none;letter-spacing:-.005em;font-weight:800}
+h1{font-size:clamp(2.8rem,6.4vw,4.8rem);line-height:1}
+.brand{font-size:1.3rem;font-weight:800}
+.phone{border-radius:22px}
