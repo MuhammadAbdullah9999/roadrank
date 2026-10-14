@@ -1,0 +1,50 @@
+---
+import { site as cfg } from '../site.config';
+import '../styles.css';
+const { title, description = cfg.description, type = 'website' } = Astro.props;
+const fullTitle = title === cfg.name ? `${cfg.name}: ${cfg.tagline}` : `${title} | ${cfg.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const og = new URL(cfg.ogImage, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content={cfg.themeColor} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={og} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <header class="nav">
+      <a class="brand" href="/"><img src="/icon.png" alt="" width="32" height="32" />{cfg.name}</a>
+      <nav>
+        <a href="/blog">Blog</a>
+        <a href="/privacy.html">Privacy</a>
+        {cfg.storeUrl && <a class="btn small" href={cfg.storeUrl}>Get the app</a>}
+      </nav>
+    </header>
+    <main><slot /></main>
+    <footer class="foot">
+      <div>
+        <strong>{cfg.name}</strong>
+        <p>{cfg.footer}</p>
+      </div>
+      <div class="links">
+        <a href="/blog">Blog</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+        <a href={`mailto:${cfg.email}`}>Contact</a>
+      </div>
+    </footer>
+  </body>
+</html>

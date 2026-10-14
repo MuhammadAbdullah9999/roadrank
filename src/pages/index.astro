@@ -1,0 +1,84 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { site as cfg } from '../site.config';
+const posts = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.data.date).slice(0, 3);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MobileApplication',
+  name: cfg.appName,
+  operatingSystem: 'Android',
+  applicationCategory: cfg.category,
+  description: cfg.description,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+};
+---
+<Base title={cfg.name}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">{cfg.eyebrow}</p>
+      <h1>{cfg.headline}</h1>
+      <p class="lead">{cfg.lead}</p>
+      <div class="cta">
+        {cfg.storeUrl
+          ? <a class="btn" href={cfg.storeUrl}>Get it on Google Play</a>
+          : <span class="btn soon">Coming soon to Google Play</span>}
+        <a class="btn ghost" href="/blog">Read the blog</a>
+      </div>
+      {cfg.note && <p class="note">{cfg.note}</p>}
+    </div>
+    <div class="shots">
+      {cfg.shots.slice(0, cfg.heroShots).map((s) => <img src={s.src} alt={s.alt} loading="eager" />)}
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>{cfg.featuresTitle}</h2>
+    <div class="grid">
+      {cfg.features.map((f) => (<div class="card"><h3>{f.title}</h3><p>{f.text}</p></div>))}
+    </div>
+  </section>
+
+  {cfg.shots.length > cfg.heroShots && (
+    <section class="section">
+      <h2>See it in action</h2>
+      <div class="strip">
+        {cfg.shots.map((s) => <img src={s.src} alt={s.alt} loading="lazy" />)}
+      </div>
+    </section>
+  )}
+
+  <section class="section">
+    <h2>How it works</h2>
+    <ol class="steps">
+      {cfg.steps.map((s) => <li><strong>{s.title}</strong><span>{s.text}</span></li>)}
+    </ol>
+  </section>
+
+  <section class="section">
+    <h2>Questions</h2>
+    <div class="faq">
+      {cfg.faq.map((q) => (<details><summary>{q.q}</summary><p>{q.a}</p></details>))}
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>From the blog</h2>
+    <div class="posts">
+      {posts.map((p) => (
+        <a class="post" href={`/blog/${p.id}`}>
+          <h3>{p.data.title}</h3>
+          <p>{p.data.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="final">
+    <h2>{cfg.finalTitle}</h2>
+    {cfg.storeUrl
+      ? <a class="btn" href={cfg.storeUrl}>Get it on Google Play</a>
+      : <span class="btn soon">Coming soon to Google Play</span>}
+  </section>
+</Base>

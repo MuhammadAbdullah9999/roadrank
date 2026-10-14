@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { site as cfg } from '../../site.config';
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  author: { '@type': 'Organization', name: cfg.name },
+};
+---
+<Base title={post.data.title} description={post.data.description} type="article">
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <article class="section narrow prose">
+    <p class="crumb"><a href="/blog">← All posts</a></p>
+    <h1>{post.data.title}</h1>
+    <time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+    <Content />
+    <aside class="callout">
+      <strong>{cfg.calloutTitle}</strong>
+      <p>{cfg.calloutText}</p>
+      {cfg.storeUrl ? <a class="btn" href={cfg.storeUrl}>Get it on Google Play</a> : <span class="btn soon">Coming soon</span>}
+    </aside>
+  </article>
+</Base>

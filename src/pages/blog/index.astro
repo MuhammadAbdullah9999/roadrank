@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { site as cfg } from '../../site.config';
+const posts = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.data.date);
+---
+<Base title={`${cfg.name} Blog`} description={cfg.blogDescription}>
+  <section class="section narrow">
+    <h1>{cfg.name} blog</h1>
+    <p class="lead">{cfg.blogDescription}</p>
+    <div class="posts">
+      {posts.map((p) => (
+        <a class="post" href={`/blog/${p.id}`}>
+          <time datetime={p.data.date.toISOString()}>{p.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+          <h3>{p.data.title}</h3>
+          <p>{p.data.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
