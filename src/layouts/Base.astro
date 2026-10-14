@@ -18,7 +18,9 @@ const links = [['Features', '/#features'], ['How it works', '/#how'], ['Blog', '
     <meta name="description" content={description} />
     <meta name="theme-color" content={cfg.themeColor} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href="/icon.png" />
+    <link rel="icon" href="/icon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/icon.png" />
+    {(cfg as any).googleVerification && <meta name="google-site-verification" content={(cfg as any).googleVerification} />}
     {(cfg as any).fontHref && <link rel="stylesheet" href={(cfg as any).fontHref} />}
     <link rel="alternate" type="application/rss+xml" title={`${cfg.name} blog`} href="/rss.xml" />
     <meta property="og:type" content={type} />
@@ -55,5 +57,47 @@ const links = [['Features', '/#features'], ['How it works', '/#how'], ['Blog', '
       </div>
       <p class="copy">© {new Date().getFullYear()} {cfg.name}. All rights reserved.</p>
     </footer>
+    <div id="progress"></div>
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      (function () {
+        var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var sel = '.section>h2,.section>.eyebrow,.section>.lead,.stats,.card,.row,.pro-box,.steps li,.strip,.faq details,.tile,.head-row,.final>*,.about-body>*,.prose>*,.feature,.foot-grid>div';
+        var els = document.querySelectorAll(sel);
+        els.forEach(function (el) {
+          var sib = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+          el.style.setProperty('--i', Math.min(sib, 6));
+          el.classList.add('rv');
+        });
+        function count(el) {
+          var m = /^(\D*)(\d+)(.*)$/.exec(el.textContent.trim());
+          if (!m || rm) return;
+          var end = +m[2], t0 = performance.now(), dur = 1100;
+          (function step(t) {
+            var p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+            el.textContent = m[1] + Math.round(end * e) + m[3];
+            if (p < 1) requestAnimationFrame(step);
+          })(t0);
+        }
+        var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+          es.forEach(function (e) {
+            if (!e.isIntersecting) return;
+            e.target.classList.add('in');
+            if (e.target.classList.contains('stats')) e.target.querySelectorAll('strong').forEach(count);
+            io.unobserve(e.target);
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }) : null;
+        els.forEach(function (el) { io ? io.observe(el) : el.classList.add('in'); });
+        var bar = document.getElementById('progress'), nav = document.querySelector('.nav'), tick = false;
+        function upd() {
+          var h = document.documentElement.scrollHeight - innerHeight;
+          bar.style.transform = 'scaleX(' + (h > 0 ? scrollY / h : 0) + ')';
+          nav.classList.toggle('stuck', scrollY > 8);
+          tick = false;
+        }
+        addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(upd); } }, { passive: true });
+        upd();
+      })();
+    </script>
   </body>
 </html>
