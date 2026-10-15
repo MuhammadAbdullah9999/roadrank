@@ -1,5 +1,7 @@
 ---
 import { site as cfg } from '../site.config';
+import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 import '../styles.css';
 import '../theme.css';
 const { title, description = cfg.description, type = 'website' } = Astro.props;
@@ -57,6 +59,8 @@ const links = [['Features', '/#features'], ['How it works', '/#how'], ['Blog', '
       </div>
       <p class="copy">© {new Date().getFullYear()} {cfg.name}. All rights reserved.</p>
     </footer>
+    <Analytics />
+    <SpeedInsights />
     <div id="progress"></div>
     <script is:inline>
       document.documentElement.classList.add('js');
