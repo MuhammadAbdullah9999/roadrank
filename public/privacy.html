@@ -35,7 +35,8 @@
 <p>Trips (GPS points with speed and time, distance, score, events such as hard braking), vehicles you add, notes and settings are stored on your device. Uninstalling the app or choosing Delete data in Settings removes them.</p>
 
 <h2>Location</h2>
-<p>Road Rank uses your precise location only while a drive you started is recording. If you turn on "Record while the screen is locked", location continues in the background during that drive, and Android shows a notification while it does. The app never collects location when no drive is running.</p>
+<p>Road Rank uses your precise location only while a drive you started is recording. During that drive the app runs an Android foreground service, so recording continues if you switch apps or the screen turns off, and Android shows a notification the whole time. Recording stops when you pause or end the drive. The app does not request "all the time" background location and never collects location when no drive is running.</p>
+<p>The app also reads motion data from your phone during a recorded drive to detect hard braking, quick acceleration and sharp turns. This data is used to calculate your score and is stored with the trip on your device.</p>
 
 <h2>Account</h2>
 <p>Signing in is optional. If you sign in, we store your email address to run your account. We email you a one-time sign-in code. There are no passwords.</p>
