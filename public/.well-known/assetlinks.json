@@ -1,0 +1,17 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.lifeadminos.app",
+      "sha256_cert_fingerprints": [
+        "A9:A5:1E:73:25:3A:9E:5C:BD:7B:87:0B:78:75:FB:42:69:4B:89:27:D1:3A:6F:F1:FD:76:B0:B3:83:37:49:B8",
+        "5F:97:02:DC:21:75:7D:DE:4E:70:A0:2A:E2:C9:1A:C4:1C:9E:A6:AF:7C:67:2F:F2:C2:61:5D:34:6D:7E:C7:E9",
+        "2C:9B:CF:24:B9:3F:4F:7B:90:E9:AB:BA:1B:4D:57:B6:94:51:CC:F5:E1:D7:A9:78:A7:E4:44:32:C8:CA:8D:54"
+      ]
+    }
+  }
+]
