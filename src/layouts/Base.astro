@@ -1,14 +1,22 @@
 ---
-import { site as cfg } from '../site.config';
+import { site as cfg, storeLink } from '../site.config';
 import Analytics from '@vercel/analytics/astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
 import '../styles.css';
 import '../theme.css';
-const { title, description = cfg.description, type = 'website' } = Astro.props;
+const { title, description = cfg.description, type = 'website', noindex = false } = Astro.props;
 const fullTitle = title === cfg.name ? `${cfg.name}: ${cfg.tagline}` : `${title} | ${cfg.name}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const og = new URL(cfg.ogImage, Astro.site);
 const path = Astro.url.pathname;
+const siteUrl = new URL('/', Astro.site).href;
+const orgLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Organization', '@id': `${siteUrl}#org`, name: cfg.name, url: siteUrl, logo: new URL('/icon.png', Astro.site).href, email: cfg.email, sameAs: [cfg.storeUrl].filter(Boolean) },
+    { '@type': 'WebSite', '@id': `${siteUrl}#website`, name: cfg.name, url: siteUrl, publisher: { '@id': `${siteUrl}#org` }, inLanguage: 'en' },
+  ],
+};
 const links = [['Features', '/#features'], ['How it works', '/#how'], ['Blog', '/blog'], ['FAQ', '/faq'], ['About', '/about']];
 ---
 <!doctype html>
@@ -19,10 +27,14 @@ const links = [['Features', '/#features'], ['How it works', '/#how'], ['Blog', '
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content={cfg.themeColor} />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1'} />
     <link rel="canonical" href={canonical} />
+    {cfg.playId && <meta name="google-play-app" content={`app-id=${cfg.playId}`} />}
     <link rel="icon" href="/icon.png" type="image/png" />
     <link rel="apple-touch-icon" href="/icon.png" />
     {(cfg as any).googleVerification && <meta name="google-site-verification" content={(cfg as any).googleVerification} />}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     {(cfg as any).fontHref && <link rel="stylesheet" href={(cfg as any).fontHref} />}
     <link rel="alternate" type="application/rss+xml" title={`${cfg.name} blog`} href="/rss.xml" />
     <meta property="og:type" content={type} />
@@ -31,7 +43,15 @@ const links = [['Features', '/#features'], ['How it works', '/#how'], ['Blog', '
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={og} />
+    <meta property="og:image:width" content="1024" />
+    <meta property="og:image:height" content="500" />
+    <meta property="og:image:alt" content={`${cfg.name} driving score app`} />
+    <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={og} />
+    <script type="application/ld+json" set:html={JSON.stringify(orgLd)} />
   </head>
   <body>
     <header class="nav">
@@ -41,7 +61,7 @@ const links = [['Features', '/#features'], ['How it works', '/#how'], ['Blog', '
       <nav class="menu">
         {links.map(([t, h]) => <a href={h} class:list={[{ on: h === path || (h === '/blog' && path.startsWith('/blog')) }]}>{t}</a>)}
         {cfg.storeUrl
-          ? <a class="btn small" href={cfg.storeUrl}>Get the app</a>
+          ? <a class="btn small" href={storeLink('nav')} rel="noopener">Get the app</a>
           : <a class="btn small soon" href="/#notify">Coming soon</a>}
       </nav>
     </header>
@@ -55,7 +75,7 @@ const links = [['Features', '/#features'], ['How it works', '/#how'], ['Blog', '
         </div>
         <div><h4>Explore</h4><a href="/#features">Features</a><a href="/#how">How it works</a><a href="/blog">Blog</a><a href="/faq">FAQ</a><a href="/about">About</a></div>
         <div><h4>Legal</h4><a href="/privacy.html">Privacy policy</a><a href="/terms.html">Terms of use</a>{cfg.deleteUrl && <a href={cfg.deleteUrl}>Delete account</a>}<a href={`mailto:${cfg.email}`}>Contact</a></div>
-        <div><h4>More apps</h4><a href={cfg.sister.url}>{cfg.sister.name}</a><a href="/rss.xml">RSS feed</a><a href="/sitemap-index.xml">Sitemap</a></div>
+        <div><h4>Get the app</h4>{cfg.storeUrl && <a href={storeLink('footer')} rel="noopener">Road Rank on Google Play</a>}<a href={cfg.sister.url}>{cfg.sister.name}</a><a href="/rss.xml">RSS feed</a><a href="/sitemap-index.xml">Sitemap</a></div>
       </div>
       <p class="copy">© {new Date().getFullYear()} {cfg.name}. All rights reserved.</p>
     </footer>

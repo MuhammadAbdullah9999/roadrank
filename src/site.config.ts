@@ -1,20 +1,21 @@
 export const site = {
   name: 'Road Rank',
   appName: 'Road Rank: Driving Tracker',
-  tagline: 'Driving Tracker and Leaderboard',
-  description: 'Road Rank scores every drive from 0 to 100 and ranks you against drivers in your city, your country and the world. No car hardware needed. Coming soon to Android.',
+  tagline: 'Driving Score App and Driving Tracker for Android',
+  description: 'Road Rank is a free driving score app for Android. It scores every drive from 0 to 100 with your phone GPS and ranks you against drivers in your city, country and the world. No car hardware.',
   blogHeading: 'Drive smoother, score higher, save money',
   blogDescription: 'Guides to understanding your driving score, driving more smoothly and safely, and getting more from Road Rank.',
   blogTitle: 'Get better, one drive at a time',
   category: 'AutoApplication',
   themeColor: '#0a0a0a',
   ogImage: '/og.png',
-  storeUrl: '',
+  storeUrl: 'https://play.google.com/store/apps/details?id=com.lifeadminos.app',
+  playId: 'com.lifeadminos.app',
   deleteUrl: '/delete-account.html',
   email: 'hafizzabdullah999@gmail.com',
   sister: { name: 'LinkGuard: Scam Link Scanner', url: 'https://linkguard-nine.vercel.app' },
   fontHref: 'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap',
-  footer: 'Score every drive and rank against other drivers. Coming soon to Android.',
+  footer: 'Score every drive and rank against other drivers. Free on Google Play for Android.',
   disclaimer: 'Scores are estimates from phone GPS and are not a safety rating or insurance score. Never use the app while driving. Set it up before you start, or let a passenger handle it.',
   categories: {
     'Driving Score': { emoji: '📊', from: '#4a3b00', to: '#f5b800' },
@@ -23,8 +24,8 @@ export const site = {
     'Road Rank': { emoji: '🏆', from: '#2b2b2b', to: '#8a7a2a' },
   } as Record<string, { emoji: string; from: string; to: string }>,
 
-  eyebrow: '🏁 Coming soon to Android',
-  headline: 'Every drive gets a score. <em>See where you rank.</em>',
+  eyebrow: '🏁 Now on Google Play · Free for Android',
+  headline: 'The driving score app that shows <em>where you rank.</em>',
   lead: 'Road Rank uses your phone GPS to score how smoothly you drive from 0 to 100, then ranks you against drivers in your city, your country and the world. No car hardware. No sign-up to start.',
   heroBadges: ['No hardware needed', 'No account to record', 'Private by design'],
   heroShots: [
@@ -35,7 +36,7 @@ export const site = {
     { value: '0-100', label: 'score for every drive' },
     { value: '3', label: 'leaderboards: city, country, world' },
     { value: '30', label: 'day rolling ranking window' },
-    { value: '60', label: 'days of Pro free at launch' },
+    { value: '60', label: 'days of Pro free in early access' },
   ],
   problem: {
     eyebrow: 'Why Road Rank',
@@ -69,7 +70,7 @@ export const site = {
   ],
   pro: {
     eyebrow: 'Road Rank Pro',
-    title: 'Free for 60 days at launch, then $3.99 a month or $24.99 a year',
+    title: 'Free for 60 days in early access, then $3.99 a month or $24.99 a year',
     text: 'Early access includes 60 days of Pro with no card needed. We will ask before any billing begins, and you can cancel any time.',
     items: ['AI coach after every drive', 'HUD mode with mirror', 'Live G-force meter with peak hold', 'Cloud backup and restore', 'CSV, GPX and PDF exports', 'Private clubs for up to 50 friends'],
   },
@@ -96,7 +97,7 @@ export const site = {
     { emoji: '🛣️', title: 'Road trippers', text: 'Record long drives and review trends across weeks and months.' },
   ],
   faq: [
-    { q: 'When does Road Rank launch?', a: 'Road Rank is coming soon to Google Play for Android. Check back here or email us to be told at launch.' },
+    { q: 'Where can I download Road Rank?', a: 'Road Rank is free on Google Play for Android phones. Search for Road Rank: Driving Tracker, or use the Get it on Google Play button on this site. An iPhone version is not available yet.' },
     { q: 'Do I need a car gadget or an account?', a: 'No gadget. Road Rank uses your phone GPS and motion. You can record drives without signing up. A display name and city are only needed if you join the leaderboard.' },
     { q: 'How is the driving score calculated?', a: 'Each drive starts at 100. You lose 4 points for every hard-braking event and 3 for every quick acceleration. A drive needs at least 300 m to get a score. The in-app breakdown shows exactly what cost you points.' },
     { q: 'How does the leaderboard work?', a: 'Your rank is your average score over the last 30 days, weighted by distance. You need at least 3 drives and 30 km in that window. Every drive is checked on the server.' },
@@ -109,9 +110,9 @@ export const site = {
     { q: 'Should I use it while driving?', a: 'Never interact with the app while driving. Start it before you set off or let a passenger handle it.' },
   ],
   finalTitle: 'Ready to see your rank?',
-  finalText: 'Road Rank is coming soon to Google Play. Email us and we will tell you the day it launches.',
-  calloutTitle: 'Road Rank is coming soon',
-  calloutText: 'Score every drive and see how you rank in your city. Launching on Google Play.',
+  finalText: 'Road Rank is free on Google Play. Install it, start a drive, and get your first score today.',
+  calloutTitle: 'Try Road Rank free',
+  calloutText: 'Score every drive and see how you rank in your city. Free on Google Play for Android.',
   aboutTitle: 'Better driving, made visible',
   aboutIntro: 'Road Rank is an Android app that turns every drive into a score you can improve and a rank you can share.',
   about: [
@@ -121,3 +122,7 @@ export const site = {
     { title: 'Your privacy', paras: ['Only drives you start are recorded. You join the leaderboard with a display name and a city. Your email and exact routes are never shown to others, and you can export or delete your data in the app.'] },
   ],
 };
+
+// Google Play link with an install referrer, so Play Console shows installs that came from this site.
+export const storeLink = (placement: string) =>
+  site.storeUrl ? `${site.storeUrl}&referrer=${encodeURIComponent(`utm_source=roadrank_site&utm_medium=website&utm_campaign=${placement}`)}` : '';

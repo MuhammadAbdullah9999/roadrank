@@ -3,7 +3,7 @@ import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import PostCard from '../../components/PostCard.astro';
 import { getPosts, catMeta, readTime, fmtDate } from '../../lib/posts';
-import { site as cfg } from '../../site.config';
+import { site as cfg, storeLink } from '../../site.config';
 export async function getStaticPaths() {
   const posts = await getPosts();
   return posts.map((post) => ({ params: { slug: post.id }, props: { post, posts } }));
@@ -12,9 +12,26 @@ const { post, posts } = Astro.props;
 const { Content } = await render(post);
 const m = catMeta(post.data.category);
 const related = posts.filter((p) => p.id !== post.id).sort((a, b) => Number(b.data.category === post.data.category) - Number(a.data.category === post.data.category)).slice(0, 3);
+const url = new URL(`/blog/${post.id}`, Astro.site).href;
+const home = new URL('/', Astro.site).href;
 const jsonLd = {
-  '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.data.title, description: post.data.description,
-  datePublished: post.data.date.toISOString(), author: { '@type': 'Organization', name: cfg.name }, publisher: { '@type': 'Organization', name: cfg.name },
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BlogPosting', headline: post.data.title, description: post.data.description, url, mainEntityOfPage: url,
+      image: new URL(cfg.ogImage, Astro.site).href, inLanguage: 'en', articleSection: post.data.category,
+      datePublished: post.data.date.toISOString(), dateModified: (post.data.updated ?? post.data.date).toISOString(),
+      author: { '@type': 'Organization', name: `${cfg.name} team`, url: new URL('/about', Astro.site).href },
+      publisher: { '@id': `${home}#org` },
+    },
+    {
+      '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: home },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: new URL('/blog', Astro.site).href },
+        { '@type': 'ListItem', position: 3, name: post.data.title, item: url },
+      ],
+    },
+  ],
 };
 ---
 <Base title={post.data.title} description={post.data.description} type="article">
@@ -32,7 +49,7 @@ const jsonLd = {
     <aside class="callout">
       <strong>{cfg.calloutTitle}</strong>
       <p>{cfg.calloutText}</p>
-      {cfg.storeUrl ? <a class="btn" href={cfg.storeUrl}>Get it on Google Play</a> : <a class="btn soon" href="/#notify">Get notified at launch</a>}
+      {cfg.storeUrl ? <a class="btn" href={storeLink(`blog_${post.id}`)} rel="noopener">Get it free on Google Play</a> : <a class="btn soon" href="/#notify">Get notified at launch</a>}
     </aside>
   </article>
   <section class="section">
