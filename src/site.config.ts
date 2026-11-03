@@ -1,6 +1,6 @@
 export const site = {
   name: 'Road Rank',
-  appName: 'Road Rank: Driving Tracker',
+  appName: 'Road Rank: Drive Score Tracker',
   tagline: 'Driving Score App and Driving Tracker for Android',
   description: 'Road Rank is a free driving score app for Android. It scores every drive from 0 to 100 with your phone GPS and ranks you against drivers in your city, country and the world. No car hardware.',
   blogHeading: 'Drive smoother, score higher, save money',
@@ -36,7 +36,7 @@ export const site = {
     { value: '0-100', label: 'score for every drive' },
     { value: '3', label: 'leaderboards: city, country, world' },
     { value: '30', label: 'day rolling ranking window' },
-    { value: '60', label: 'days of Pro free in early access' },
+    { value: '100%', label: 'free to record and rank' },
   ],
   problem: {
     eyebrow: 'Why Road Rank',
@@ -54,7 +54,7 @@ export const site = {
     { eyebrow: 'Score', title: 'A driving score you can actually understand', text: 'One tap starts a drive. Road Rank tracks speed, distance and time, then scores how smoothly you drove from 0 to 100. Hard braking and quick acceleration cost points, and the breakdown shows exactly where.', bullets: ['Live speed, distance, moving time and stops', 'Hard braking, quick acceleration and sharp turn counts', 'Top speed, average speed and longest non-stop stretch', 'Weekly and monthly trends to see yourself improve'], shot: '/shots/home.png', alt: 'Road Rank home screen with driving score gauge' },
     { eyebrow: 'Trips', title: 'Every trip, saved and broken down', text: 'Open any drive to see distance, duration, moving time, stopped time, stops and speeds. Search by name, filter by this week, and share a summary card.', bullets: ['Name and annotate your trips', 'Detailed stats for each drive', 'Share a drive card with score, distance and time', 'Export to CSV, GPX and PDF with Pro'], shot: '/shots/trip.png', alt: 'Road Rank trip detail screen' },
     { eyebrow: 'Rank', title: 'Rank in your city, country and the world', text: 'Join the leaderboard with only a display name and your city. Your rank is based on your average score over the last 30 days, weighted by distance, and every drive is checked on the server so scores are fair.', bullets: ['Worldwide, country and city boards', 'Needs 3 drives and 30 km in 30 days to qualify', 'Your email and exact routes are never shown to others', 'Leave the leaderboard any time'], shot: '/shots/rank.png', alt: 'Road Rank leaderboard' },
-    { eyebrow: 'Pro', title: 'Coaching, HUD mode and more with Pro', text: 'Road Rank Pro adds an AI coach, a big-speed HUD for night driving, a live G-force meter, cloud backup and exports. Early access starts with 60 days free.', bullets: ['AI coach: a short, personal tip after each drive', 'HUD mode with mirror option', 'Cloud backup and restore on a new phone', 'Private clubs for up to 50 friends'], shot: '/shots/pro.png', alt: 'Road Rank Pro screen with pricing' },
+    { eyebrow: 'Pro', title: 'Coaching, HUD mode and more with Pro', text: 'Road Rank Pro adds an AI coach, a big-speed HUD for night driving, a live G-force meter, cloud backup and exports.', bullets: ['AI coach: a short, personal tip after each drive', 'HUD mode with mirror option', 'Cloud backup and restore on a new phone', 'Private clubs for up to 50 friends'], shot: '/shots/pro.png', alt: 'Road Rank AI driving coach tip and score breakdown' },
   ],
   gridTitle: 'Built for real drivers, not just data nerds',
   features: [
@@ -70,8 +70,8 @@ export const site = {
   ],
   pro: {
     eyebrow: 'Road Rank Pro',
-    title: 'Free for 60 days in early access, then $3.99 a month or $24.99 a year',
-    text: 'Early access includes 60 days of Pro with no card needed. We will ask before any billing begins, and you can cancel any time.',
+    title: 'Go Pro for $3.99 a month or $24.99 a year',
+    text: 'Recording, scores, trip history and the leaderboard are free forever. Pro is an optional subscription through Google Play that you can cancel any time.',
     items: ['AI coach after every drive', 'HUD mode with mirror', 'Live G-force meter with peak hold', 'Cloud backup and restore', 'CSV, GPX and PDF exports', 'Private clubs for up to 50 friends'],
   },
   howTitle: 'Start, drive, improve',
@@ -85,7 +85,7 @@ export const site = {
     { src: '/shots/trips.png', alt: 'Road Rank trips list' },
     { src: '/shots/trip.png', alt: 'Road Rank trip detail' },
     { src: '/shots/rank.png', alt: 'Road Rank leaderboard' },
-    { src: '/shots/pro.png', alt: 'Road Rank Pro' },
+    { src: '/shots/pro.png', alt: 'Road Rank AI coach' },
   ],
   audienceTitle: 'For anyone who drives and wants to get better',
   audience: [
@@ -104,7 +104,7 @@ export const site = {
     { q: 'Can other people see my routes or email?', a: 'No. The leaderboard shows a display name, score, distance and the location you choose. Your email and exact routes are never shown to others.' },
     { q: 'Does it drain my battery or run in the background?', a: 'While a drive is recording, Android shows a notification so recording continues when you switch apps or the screen turns off. Recording only happens for drives you start, and location is not collected when no drive is running.' },
     { q: 'Is the score a safety rating or insurance score?', a: 'No. It is an estimate for your own improvement and for fun. It is not a safety rating and is not shared with insurers.' },
-    { q: 'What does Pro cost?', a: 'Pro is $3.99 per month or $24.99 per year. Early access starts with 60 days free and no card needed. We will ask before billing begins.' },
+    { q: 'What does Pro cost?', a: 'Recording, scores, trip history and the leaderboard are free. Pro is $3.99 per month or $24.99 per year in the US, billed through Google Play, with local prices in other countries. Cancel any time in Google Play.' },
     { q: 'Where does the AI coach get its information?', a: 'Only numbers about a drive are used, such as distance, time, speeds, event counts and score. No names, places or routes are sent.' },
     { q: 'How do I delete my data?', a: 'You can export or delete your data in the app. There is also a delete-account page linked in the footer.' },
     { q: 'Should I use it while driving?', a: 'Never interact with the app while driving. Start it before you set off or let a passenger handle it.' },
