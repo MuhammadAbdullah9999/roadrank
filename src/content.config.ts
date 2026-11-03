@@ -11,6 +11,7 @@ const blog = defineCollection({
     updated: z.coerce.date().optional(),
     category: z.string(),
     featured: z.boolean().default(false),
+    faq: z.array(z.object({ q: z.string(), a: z.string() })).optional(),
   }),
 });
 export const collections = { blog };

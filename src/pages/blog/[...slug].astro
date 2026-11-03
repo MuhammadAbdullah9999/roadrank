@@ -24,6 +24,10 @@ const jsonLd = {
       author: { '@type': 'Organization', name: `${cfg.name} team`, url: new URL('/about', Astro.site).href },
       publisher: { '@id': `${home}#org` },
     },
+    ...(post.data.faq?.length ? [{
+      '@type': 'FAQPage',
+      mainEntity: post.data.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+    }] : []),
     {
       '@type': 'BreadcrumbList', itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: home },
@@ -46,6 +50,10 @@ const jsonLd = {
     <span class="hero-emoji">{m.emoji}</span>
   </header>
   <article class="section narrow prose"><Content />
+    {post.data.faq?.length && (<>
+      <h2>Frequently asked questions</h2>
+      <div class="faq">{post.data.faq.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}</div>
+    </>)}
     <aside class="callout">
       <strong>{cfg.calloutTitle}</strong>
       <p>{cfg.calloutText}</p>
